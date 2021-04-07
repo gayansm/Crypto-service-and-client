@@ -20,7 +20,8 @@ namespace CryptoService.Controllers
 		[Route("preferred")]
 		public IActionResult SetPreferredCoin(string symbol)
 		{
-			if (!CoinStore.IsSymbolValid(symbol) ||
+			if (string.IsNullOrEmpty(symbol) ||
+				!CoinStore.IsSymbolValid(symbol) ||
 				!user.SetPreferredCoin(symbol))
 				return BadRequest();
 

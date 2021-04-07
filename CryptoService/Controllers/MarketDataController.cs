@@ -18,9 +18,11 @@ namespace CryptoService.Controllers
 		}
 
 		[HttpGet]
+		[Route("{symbol}")]
 		public async Task<IActionResult> GetCoinData(string symbol)
 		{
-			if (!CoinStore.IsSymbolValid(symbol) ||
+			if (string.IsNullOrEmpty(symbol) ||
+				!CoinStore.IsSymbolValid(symbol) ||
 				!CoinStore.GetCoin(symbol, out Coin coin))
 				return BadRequest();
 
