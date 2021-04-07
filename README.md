@@ -1,6 +1,18 @@
 # Crypto-service-and-client
 A service to retrieve crypto currency prices from Cointree.com and a client to display some data.
 
+## Available endpoints
+http://localhost:5000/marketdata/{coin symbol}  - eg. http://localhost:5000/marketdata/btc
+http://localhost:5000/user/preferred            - This accepts post data only. Takes in one string parameter which is the coin symbol.
+
+## How to run
+### Starting the API endpoint using command line
+- Open a command prompt
+- Navigate to CryptoService project directory (..\CryptoService\CryptoService)
+- Run the following commands:
+    * dotnet restore
+    * dotnet run
+    This should start the API end points.
 
 ## Design aproach
 - Keep data separate from controllers.
