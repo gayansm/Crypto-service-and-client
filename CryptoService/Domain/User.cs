@@ -1,5 +1,5 @@
-﻿
-using CryptoService.Data;
+﻿using CryptoService.Data;
+using CryptoService.Shared;
 
 namespace CryptoService.Domain
 {

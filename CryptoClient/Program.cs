@@ -1,12 +1,9 @@
 using CryptoClient.Data;
+using CryptoClient.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CryptoClient
@@ -19,7 +16,8 @@ namespace CryptoClient
 			builder.RootComponents.Add<App>("#app");
 
 			builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-			builder.Services.AddSingleton<IAllowedCoins, AllowedCoins>();
+			builder.Services.AddSingleton<IPreferenceAndPriceService>(priceService => new TestPreferenceAndPriceService());
+			builder.Services.AddSingleton<IAllowedCoins>(allowedCoins => new AllowedCoins());
 
 			await builder.Build().RunAsync();
 		}

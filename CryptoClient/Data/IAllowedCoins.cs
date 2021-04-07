@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CryptoClient.Data
 {
 	public interface IAllowedCoins
 	{
-		List<string> GetAllowedCoins();
+		Task<List<string>> GetAllowedCoins();
 	}
 }

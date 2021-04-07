@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CryptoClient.Data
 {
@@ -9,9 +10,10 @@ namespace CryptoClient.Data
 			"BTC", "ETH", "XRP"
 		};
 
-		public List<string> GetAllowedCoins()
+		public async Task<List<string>> GetAllowedCoins()
 		{
-			return coins;
+			// Pseudo async implementation to emulate real-world scenarios.
+			return await Task.FromResult(coins);
 		}
 	}
 }

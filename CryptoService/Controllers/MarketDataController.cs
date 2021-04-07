@@ -1,5 +1,5 @@
 ﻿using CryptoService.Data;
-using CryptoService.Domain;
+using CryptoService.Shared;
 using CryptoService.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

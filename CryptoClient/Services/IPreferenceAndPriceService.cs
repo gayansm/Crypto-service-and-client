@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using CryptoService.Shared;
 using System.Threading.Tasks;
 
 namespace CryptoClient.Services
 {
-	public class IPreferenceAndPriceService
+	public interface IPreferenceAndPriceService
 	{
+		Task<bool> SetUserPreferredCoin(string symbol);
+		Task<Coin> GetCoinPriceData(string symbol);
 	}
 }

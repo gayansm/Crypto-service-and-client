@@ -1,8 +1,7 @@
 ﻿using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
-using CryptoService.Domain;
 using System;
+using CryptoService.Shared;
 
 namespace CryptoService.Data
 {

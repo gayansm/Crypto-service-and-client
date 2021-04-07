@@ -1,4 +1,5 @@
-﻿
+﻿using CryptoService.Shared;
+
 namespace CryptoService.Domain
 {
 	public interface IUser

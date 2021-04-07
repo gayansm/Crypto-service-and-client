@@ -1,7 +1,100 @@
 ﻿@page "/"
+@using CryptoService.Shared;
+@using CryptoClient.Data
+@using CryptoClient.Services
+@inject IAllowedCoins allowedCoins
+@inject IPreferenceAndPriceService priceService
 
-<h1>Hello, world!</h1>
+<h3>Price Updates</h3>
 
-Welcome to your new app.
+<label>Select a coin to see it's asking price and percentage change.</label>
+<select @onchange="HandleSelectedCoinChanged">
+    <option> Select a Coin </option>
+    @foreach (var coin in selectableCoins)
+    {
+        <option id="@coin">@coin</option>
+    }
+</select>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<div>
+    @if (selectedCoin != null)
+    {
+        <h3>@selectedCoin.Name</h3>
+        <ul>
+            <li><label>Price: @selectedCoin.Ask</label></li>
+
+            @if (!double.IsNaN(selectedCoin.AskPricePercentageChange) &&
+                selectedCoin.AskPricePercentageChange != 0)
+            {
+                <li><label>Change (%): @selectedCoin.AskPricePercentageChange</label></li>
+            }
+        </ul>
+    }
+</div>
+
+<ul>
+    @foreach (var error in errors)
+    {
+        <li>@error</li>
+    }
+</ul>
+
+@code {
+
+    private List<string> selectableCoins = new List<string>();
+    private List<string> errors = new List<string>();
+    private CoinWithPriceChangeInfo selectedCoin;
+    private string debugText = string.Empty;
+
+    private const int PriceUpdateInterval = 1000;
+    private System.Timers.Timer getPriceTimer =
+        new System.Timers.Timer(PriceUpdateInterval) { AutoReset = true };
+
+    protected override async Task OnInitializedAsync()
+    {
+        selectableCoins = await allowedCoins.GetAllowedCoins();
+        await base.OnInitializedAsync();
+    }
+
+    async void HandleSelectedCoinChanged(ChangeEventArgs e)
+    {
+        ResetPage();
+
+        var selectedSymbol = e.Value.ToString();
+        if (!await priceService.SetUserPreferredCoin(selectedSymbol))
+            errors.Add($"Failed to set user's preferred coin to {selectedSymbol}");
+        else
+        {
+            selectedCoin = new CoinWithPriceChangeInfo(await priceService.GetCoinPriceData(selectedSymbol));
+            getPriceTimer.Elapsed += OnGetPriceTimer;
+            getPriceTimer.Start();
+        }
+
+        StateHasChanged();
+    }
+
+    private void ResetPage()
+    {
+        errors.Clear();
+        getPriceTimer.Stop();
+        getPriceTimer.Elapsed -= OnGetPriceTimer;
+    }
+
+    private async void OnGetPriceTimer(object sender, EventArgs e)
+    {
+        if (selectedCoin == null)
+            return;
+
+        await InvokeAsync(async () =>
+        {
+            var coin = await priceService.GetCoinPriceData(selectedCoin.Symbol);
+            selectedCoin.UpdatePrices(coin.Rate, coin.Ask, coin.Bid);
+            StateHasChanged();
+        });
+    }
+
+    private void UpdateDebugText()
+    {
+        debugText = $"{selectedCoin.Symbol},{selectedCoin.Ask},{selectedCoin.AskPricePercentageChange}";
+    }
+}
