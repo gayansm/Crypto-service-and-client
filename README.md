@@ -13,7 +13,8 @@ A service to retrieve crypto currency prices from Cointree.com and a client to d
 - Run the following commands:
     * dotnet restore
     * dotnet run
-    This should start the API end points at http://localhost:5000.
+
+This should start the API end points at http://localhost:5000.
 
 ### Starting the client that retrieves data from the API
 The steps to run the client are similar to the ones for running the API project. The only difference is that the commands should be executed from within the "client" project directory (..\CryptoService\CryptoClient.)
