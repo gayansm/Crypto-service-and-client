@@ -14,7 +14,7 @@ A service to retrieve crypto currency prices from Cointree.com and a client to d
     * dotnet restore
     * dotnet run
 
-This should start the API end points at http://localhost:5000.
+This should start the API end points at http://localhost:5000. Swagger UI can be accessed at http://localhost:5000/swagger/index.html
 
 ### Starting the client that retrieves data from the API
 The steps to run the client are similar to the ones for running the API project. The only difference is that the commands should be executed from within the "client" project directory (..\CryptoService\CryptoClient.)
@@ -26,9 +26,13 @@ The client should be accessible at http://localhost:5001
 - Make pricing data retrieval agnostic from endpoint used.
 - Initially designed to only support the three coins described in the second part of the question.
   This was later fixed by including all the coins from the CoinTree endpoint in the data store.
+- Components that should be available in the client application were moved out to a separate assembly.
+- The coin prices in the client is being updated every second and the percentage change is only calculated once the price of the coin changes. This means, the percentage change value may not be displayed or be 0, after a coin is initially selected.
  
  ## Possible improvements
  - Add unit tests!
  - Separate out data storage and tetrieval logic (these are in the same class at the moment)
  - Implement retrieval of all coins from the CoinTree service, in a different way.
    At the moment, this is carried out symchronously at startup.
+ - A more coherent directory structure.
+ - Better naming, specially for the three different "coin" classes.
